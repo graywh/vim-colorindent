@@ -13,9 +13,15 @@ endif
 
 " Define the highlight groups, but don't override the user's pre-defined
 " colors.
-for i in range(1,s:color_indent_level_max)
+for i in range(1,g:color_indent_level_max)
   exec 'highlight default clear colorIndentLevel'.i
   exec 'highlight default link colorIndentLevel'.i.'pre colorIndentLevel'.i
+endfor
+for i in range(3,g:color_indent_level_max,2)
+  exec 'highlight default link colorIndentLevel'.i.' colorIndentLevel1'
+endfor
+for i in range(4,g:color_indent_level_max,2)
+  exec 'highlight default link colorIndentLevel'.i.' colorIndentLevel2'
 endfor
 
 function! s:skipMatches()
