@@ -15,6 +15,7 @@ endif
 " colors.
 for i in range(1,s:color_indent_level_max)
   exec 'highlight default clear colorIndentLevel'.i
+  exec 'highlight default link colorIndentLevel'.i.'pre colorIndentLevel'.i
 endfor
 
 function! s:skipMatches()
@@ -48,10 +49,24 @@ function! s:DefineMatches()
     let l:mult = 1
   endif
   " Create new matches
+  call s:match2(l:str, l:mult)
+endfunction
+
+function! s:match1(str, mult)
   for i in range(1,s:color_indent_level_max,1)
-    let w:matches = extend(w:matches, [matchadd('colorIndentLevel'.i, '^'.l:str.'\{'.(i*l:mult-1).'}'.l:str, s:color_indent_level_max-i+1)])
+    let w:matches = extend(w:matches, [matchadd('colorIndentLevel'.i, '^'.a:str.'\{'.(i*a:mult-1).'}'.a:str, s:color_indent_level_max-i+1)])
   endfor
 endfunction
 
-autocmd BufWinEnter * call <SID>DefineMatches()
-autocmd BufWinLeave * call <SID>ClearMatches()
+function! s:match2(str, mult)
+  for i in range(1,s:color_indent_level_max,1)
+    let w:matches = extend(w:matches, [matchadd('colorIndentLevel'.i.'pre', '^'.a:str.'\{'.((i-1)*a:mult).'}\zs'.a:str.'\{'.(a:mult-1).'}', i)])
+    let w:matches = extend(w:matches, [matchadd('colorIndentLevel'.i, '^'.a:str.'\{'.(i*a:mult-1).'}\zs'.a:str, i)])
+  endfor
+endfunction
+
+augroup colorindent
+  autocmd!
+  autocmd BufWinEnter * call <SID>DefineMatches()
+  autocmd BufWinLeave * call <SID>ClearMatches()
+augroup END
