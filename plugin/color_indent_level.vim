@@ -40,28 +40,20 @@ function! s:DefineMatches()
     return
   endif
   let w:matches = []
-  " Determine how to match
-  if &l:expandtab
-    let l:str = '\s'
-    let l:mult = &l:sw
-  else
-    let l:str = '\t'
-    let l:mult = 1
-  endif
   " Create new matches
-  call s:match2(l:str, l:mult)
+  call s:match2()
 endfunction
 
-function! s:match1(str, mult)
+function! s:match1()
   for i in range(1,s:color_indent_level_max,1)
-    let w:matches = extend(w:matches, [matchadd('colorIndentLevel'.i, '^'.a:str.'\{'.(i*a:mult-1).'}'.a:str, s:color_indent_level_max-i+1)])
+    let w:matches = extend(w:matches, [matchadd('colorIndentLevel'.i, '^\s*\%'.((i-1)*&l:sw+1).'v\s*\%'.(i*&l:sw+1).'v', s:color_indent_level_max-i+1)])
   endfor
 endfunction
 
-function! s:match2(str, mult)
+function! s:match2()
   for i in range(1,s:color_indent_level_max,1)
-    let w:matches = extend(w:matches, [matchadd('colorIndentLevel'.i.'pre', '^'.a:str.'\{'.((i-1)*a:mult).'}\zs'.a:str.'\{'.(a:mult-1).'}', i)])
-    let w:matches = extend(w:matches, [matchadd('colorIndentLevel'.i, '^'.a:str.'\{'.(i*a:mult-1).'}\zs'.a:str, i)])
+    let w:matches = extend(w:matches, [matchadd('colorIndentLevel'.i.'pre', '^\s*\%'.((i-1)*&l:sw+1).'v\zs\s*\%'.(i*&l:sw).'v', i)])
+    let w:matches = extend(w:matches, [matchadd('colorIndentLevel'.i, '^\s*\%'.(i*&l:sw).'v\zs\s*\%'.(i*&l:sw+1).'v', i)])
   endfor
 endfunction
 
