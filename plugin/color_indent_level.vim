@@ -45,7 +45,7 @@ function! s:DefineMatches()
   if s:skipMatches()
     return
   endif
-  let w:matches = []
+  call s:ClearMatches()
   " Create new matches
   call s:match2()
 endfunction
@@ -65,6 +65,6 @@ endfunction
 
 augroup colorindent
   autocmd!
-  autocmd BufWinEnter * call <SID>DefineMatches()
-  autocmd BufWinLeave * call <SID>ClearMatches()
+  autocmd BufEnter,WinEnter * call <SID>DefineMatches()
+  "autocmd BufWinLeave * call <SID>ClearMatches()
 augroup END
