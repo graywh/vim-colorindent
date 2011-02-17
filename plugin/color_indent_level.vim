@@ -1,8 +1,7 @@
-if exists('g:color_indent_level_loaded') && g:color_indent_level_loaded == 1
+if exists('g:color_indent_level_loaded')
   finish
-else
-  let g:color_indent_level_loaded = 1
 endif
+let g:color_indent_level_loaded = 1
 
 if exists('g:color_indent_level_max')
   let s:color_indent_level_max = g:color_indent_level_max
