@@ -75,6 +75,9 @@ function! s:match2()
   endfor
 endfunction
 
+command! -bar ColorIndentEnable call s:DefineMatches()
+command! -bar ColorIndentDisable call s:ClearMatches()
+
 augroup colorindent
   autocmd!
   autocmd BufEnter,WinEnter * call <SID>DefineMatches()
