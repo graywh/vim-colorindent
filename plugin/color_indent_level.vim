@@ -1,43 +1,41 @@
-if exists('g:color_indent_level_loaded')
+if exists('g:color_indent_loaded')
   finish
 endif
-let g:color_indent_level_loaded = 1
+let g:loaded_indent_guides = 1
+let g:color_indent_loaded = 1
 
-if exists('g:color_indent_level_max')
-  let s:color_indent_level_max = g:color_indent_level_max
+if exists('g:color_indent_max')
+  let s:color_indent_max = g:color_indent_max
 else
-  let s:color_indent_level_max = &foldnestmax
-  let g:color_indent_level_max = s:color_indent_level_max
+  let g:color_indent_max = s:color_indent_max
+  let s:color_indent_max = &foldnestmax
 endif
 
 " Define the highlight groups, but don't override the user's pre-defined
 " colors.
-for i in range(1,g:color_indent_level_max)
-  exec 'highlight default clear colorIndentLevel'.i
-  exec 'highlight default link colorIndentLevel'.i.'pre colorIndentLevel'.i
+for i in range(1,s:color_indent_max)
+  exec 'highlight default clear colorIndent'.i
+  exec 'highlight default link colorIndent'.i.'pre colorIndent'.i
 endfor
-for i in range(3,g:color_indent_level_max,2)
-  exec 'highlight default link colorIndentLevel'.i.' colorIndentLevel1'
+for i in range(3,s:color_indent_max,2)
+  exec 'highlight default link colorIndent'.i.' colorIndent'
 endfor
-for i in range(4,g:color_indent_level_max,2)
-  exec 'highlight default link colorIndentLevel'.i.' colorIndentLevel2'
+for i in range(4,s:color_indent_max,2)
+  exec 'highlight default link colorIndent'.i.' colorIndent'
 endfor
 
 function! s:skipMatches()
-  return exists('b:skip_color_indent_level') && b:skip_color_indent_level == 1
+  return exists('b:skip_color_indent') && b:skip_color_indent == 1
 endfunction
 
 function! s:ClearMatches()
-  if s:skipMatches()
-    return
-  endif
   " Remove old matches
-  if exists('w:matches')
-    for m in w:matches
-      call matchdelete(m)
+  if exists('w:color_indent_matches')
+    for id in w:color_indent_matches
+      call matchdelete(id)
     endfor
   endif
-  let w:matches = []
+  let w:color_indent_matches = []
 endfunction
 
 function! s:DefineMatches()
@@ -50,15 +48,15 @@ function! s:DefineMatches()
 endfunction
 
 function! s:match1()
-  for i in range(1,s:color_indent_level_max,1)
-    let w:matches = extend(w:matches, [matchadd('colorIndentLevel'.i, '^\s*\%'.((i-1)*&l:sw+1).'v\s*\%'.(i*&l:sw+1).'v', s:color_indent_level_max-i+1)])
+  for i in range(1,s:color_indent_max,1)
+    call add(w:color_indent_matches, matchadd('colorIndent'.i, '^\s*\%'.((i-1)*&l:sw+1).'v\s*\%'.(i*&l:sw+1).'v', s:color_indent_max-i+1))
   endfor
 endfunction
 
 function! s:match2()
-  for i in range(1,s:color_indent_level_max,1)
-    let w:matches = extend(w:matches, [matchadd('colorIndentLevel'.i.'pre', '^\s*\%'.((i-1)*&l:sw+1).'v\zs\s*\%'.(i*&l:sw).'v', i)])
-    let w:matches = extend(w:matches, [matchadd('colorIndentLevel'.i, '^\s*\%'.(i*&l:sw).'v\zs\s*\%'.(i*&l:sw+1).'v', i)])
+  for i in range(1,s:color_indent_max,1)
+    call add(w:color_indent_matches, matchadd('colorIndent'.i.'pre', '^\s*\%'.((i-1)*&l:sw+1).'v\zs\s*\%'.(i*&l:sw).'v', i))
+    call add(w:color_indent_matches, matchadd('colorIndent'.i, '^\s*\%'.(i*&l:sw).'v\zs\s*\%'.(i*&l:sw+1).'v', i))
   endfor
 endfunction
 
