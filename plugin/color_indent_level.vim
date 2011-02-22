@@ -7,7 +7,6 @@ let g:color_indent_loaded = 1
 if exists('g:color_indent_max')
   let s:color_indent_max = g:color_indent_max
 else
-  let g:color_indent_max = s:color_indent_max
   let s:color_indent_max = &foldnestmax
 endif
 
@@ -23,6 +22,22 @@ endfor
 for i in range(4,s:color_indent_max,2)
   exec 'highlight default link colorIndent'.i.' colorIndent'
 endfor
+" For alternating colors for each indent level
+"
+" assume that Normal is 234, #1C1C1C
+"
+highlight default colorIndent1 ctermbg=233 guibg=#121212
+highlight default colorIndent2 ctermbg=235 guibg=#262626
+
+" For only coloring each 'shiftwidth' column
+"
+" assume that Normal is 234, #1C1C1C
+"
+"highlight colorIndent1 ctermbg=235 guibg=#262626
+"highlight colorIndent2 ctermbg=235 guibg=#262626
+"for i in range(1,s:color_indent_max,1)
+"  exec 'highlight clear colorIndent'.i.'pre'
+"endfor
 
 function! s:skipMatches()
   return exists('b:skip_color_indent') && b:skip_color_indent == 1
