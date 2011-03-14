@@ -17,10 +17,10 @@ for i in range(1,s:color_indent_max)
   exec 'highlight default link colorIndent'.i.'pre colorIndent'.i
 endfor
 for i in range(3,s:color_indent_max,2)
-  exec 'highlight default link colorIndent'.i.' colorIndent'
+  exec 'highlight default link colorIndent'.i.' colorIndent1'
 endfor
 for i in range(4,s:color_indent_max,2)
-  exec 'highlight default link colorIndent'.i.' colorIndent'
+  exec 'highlight default link colorIndent'.i.' colorIndent2'
 endfor
 " For alternating colors for each indent level
 "
