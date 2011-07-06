@@ -4,6 +4,10 @@ endif
 let g:loaded_indent_guides = 1
 let g:color_indent_loaded = 1
 
+if !exists('*matchadd')
+  finish
+endif
+
 if exists('g:color_indent_max')
   let s:color_indent_max = g:color_indent_max
 else
