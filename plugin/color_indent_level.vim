@@ -8,6 +8,12 @@ if !exists('*matchadd')
   finish
 endif
 
+if !exists('g:color_indent_disabled')
+  " let g:color_indent_disabled = g:color_indent_disabled
+" else
+  let g:color_indent_disabled = 0
+end
+
 if !exists('g:color_indent_start')
   " let g:color_indent_start = g:color_indent_start
 " else
@@ -53,8 +59,29 @@ highlight default colorIndent2 ctermbg=DarkGray guibg=#262626
 "  exec 'highlight clear colorIndent'.i.'post'
 "endfor
 
+function! s:Enable(...)
+  if a:0 > 0 && a:1 ==# '!'
+    let g:color_indent_disabled = 0
+  else
+    if g:color_indent_disabled
+      echom 'ColorIndent is disabled globally'
+    endif
+    let b:color_indent_disabled = 0
+  endif
+  call s:DefineMatches()
+endfunction
+
+function! s:Disable(...)
+  if a:0 > 0 && a:1 ==# '!'
+    let g:color_indent_disabled = 1
+  else
+    let b:color_indent_disabled = 1
+  endif
+  call s:ClearMatches()
+endfunction
+
 function! s:skipMatches()
-  return exists('b:skip_color_indent') && b:skip_color_indent == 1
+  return exists('b:color_indent_disabled') && b:color_indent_disabled || g:color_indent_disabled
 endfunction
 
 function! s:ClearMatches()
@@ -89,8 +116,8 @@ function! s:match2()
   endfor
 endfunction
 
-command! -bar ColorIndentEnable call s:DefineMatches()
-command! -bar ColorIndentDisable call s:ClearMatches()
+command! -bang -bar ColorIndentEnable call s:Enable("<bang>")
+command! -bang -bar ColorIndentDisable call s:Disable("<bang>")
 
 augroup colorindent
   autocmd!
