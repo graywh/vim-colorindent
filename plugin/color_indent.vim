@@ -30,9 +30,11 @@ if !exists('g:color_indent_max')
   let g:color_indent_max = &foldnestmax
 endif
 
-" Comment out for only coloring 1-character
-highlight default link colorIndentOddpost colorIndentOdd
-highlight default link colorIndentEvenpost colorIndentEven
+if !exists('g:color_indent_size')
+  " let g:color_indent_size = g:color_indent_size
+" else
+  let g:color_indent_size = 0
+endif
 
 let s:cycle = ['Even', 'Odd']
 
@@ -84,7 +86,7 @@ function! s:Define()
   endif
   call s:Clear()
   " Create new matches
-  call s:match2()
+  call s:match3()
 endfunction
 
 function! s:match1()
@@ -97,6 +99,26 @@ function! s:match2()
   for i in range(g:color_indent_start, g:color_indent_max)
     call add(w:color_indent_matches, matchadd('colorIndent'.s:cycle[i%2].'post', '^\s*\%'.((i-1)*&l:sw+2).'v\zs\s*\%'.(i*&l:sw+1).'v', 0-i+1))
     call add(w:color_indent_matches, matchadd('colorIndent'.s:cycle[i%2], '^\s*\%'.((i-1)*&l:sw+1).'v\zs\s*\%'.((i-1)*&l:sw+2).'v', 0-i+1))
+  endfor
+endfunction
+
+function! s:size()
+  if exists('b:color_indent_size')
+    let l:size = b:color_indent_size
+  else
+    let l:size = g:color_indent_size
+  endif
+  if l:size == 0
+    return &l:sw
+  else
+    return l:size
+  endif
+endfunction
+
+function! s:match3()
+  let l:size = s:size()
+  for i in range(g:color_indent_start, g:color_indent_max)
+    call add(w:color_indent_matches, matchadd('colorIndent'.s:cycle[i%2], '^\s*\%'.((i-1)*&l:sw+1).'v\zs\s*\%'.((i-1)*&l:sw+1+l:size).'v', 0-i+1))
   endfor
 endfunction
 
