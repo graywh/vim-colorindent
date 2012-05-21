@@ -52,7 +52,7 @@ function! s:Enable(...)
     endif
     let b:color_indent_disabled = 0
   endif
-  call s:DefineMatches()
+  call s:Define()
 endfunction
 
 function! s:Disable(...)
@@ -61,14 +61,14 @@ function! s:Disable(...)
   else
     let b:color_indent_disabled = 1
   endif
-  call s:ClearMatches()
+  call s:Clear()
 endfunction
 
-function! s:skipMatches()
+function! s:skip()
   return exists('b:color_indent_disabled') && b:color_indent_disabled || g:color_indent_disabled
 endfunction
 
-function! s:ClearMatches()
+function! s:Clear()
   " Remove old matches
   if exists('w:color_indent_matches')
     for id in w:color_indent_matches
@@ -78,11 +78,11 @@ function! s:ClearMatches()
   let w:color_indent_matches = []
 endfunction
 
-function! s:DefineMatches()
-  if s:skipMatches()
+function! s:Define()
+  if s:skip()
     return
   endif
-  call s:ClearMatches()
+  call s:Clear()
   " Create new matches
   call s:match2()
 endfunction
@@ -105,8 +105,7 @@ command! -bang -bar ColorIndentDisable call s:Disable("<bang>")
 
 augroup colorindent
   autocmd!
-  autocmd BufEnter,WinEnter * call <SID>DefineMatches()
-  "autocmd BufWinLeave * call <SID>ClearMatches()
+  autocmd BufEnter,WinEnter * call <SID>Define()
   autocmd ColorScheme * call <SID>Colors()
   autocmd FileType help let b:color_indent_disable = 1
 augroup END
