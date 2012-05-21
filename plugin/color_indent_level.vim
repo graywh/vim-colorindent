@@ -18,7 +18,7 @@ endif
 " colors.
 for i in range(1,s:color_indent_max)
   exec 'highlight default clear colorIndent'.i
-  exec 'highlight default link colorIndent'.i.'pre colorIndent'.i
+  exec 'highlight default link colorIndent'.i.'post colorIndent'.i
 endfor
 for i in range(3,s:color_indent_max,2)
   exec 'highlight default link colorIndent'.i.' colorIndent1'
@@ -33,14 +33,14 @@ endfor
 highlight default colorIndent1 ctermbg=Black guibg=#121212
 highlight default colorIndent2 ctermbg=DarkGray guibg=#262626
 
-" For only coloring each 'shiftwidth' column
+" For only coloring each 'shiftwidth'+1 column
 "
 " assume that Normal is 234, #1C1C1C
 "
 "highlight colorIndent1 ctermbg=Black guibg=#262626
 "highlight colorIndent2 ctermbg=Black guibg=#262626
 "for i in range(1,s:color_indent_max,1)
-"  exec 'highlight clear colorIndent'.i.'pre'
+"  exec 'highlight clear colorIndent'.i.'post'
 "endfor
 
 function! s:skipMatches()
@@ -74,8 +74,8 @@ endfunction
 
 function! s:match2()
   for i in range(1,s:color_indent_max,1)
-    call add(w:color_indent_matches, matchadd('colorIndent'.i.'pre', '^\s*\%'.((i-1)*&l:sw+1).'v\zs\s*\%'.(i*&l:sw).'v', i))
-    call add(w:color_indent_matches, matchadd('colorIndent'.i, '^\s*\%'.(i*&l:sw).'v\zs\s*\%'.(i*&l:sw+1).'v', i))
+    call add(w:color_indent_matches, matchadd('colorIndent'.i.'post', '^\s*\%'.((i-1)*&l:sw+2).'v\zs\s*\%'.(i*&l:sw+1).'v'))
+    call add(w:color_indent_matches, matchadd('colorIndent'.i, '^\s*\%'.((i-1)*&l:sw+1).'v\zs\s*\%'.((i-1)*&l:sw+2).'v'))
   endfor
 endfunction
 
