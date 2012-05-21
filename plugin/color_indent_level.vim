@@ -8,6 +8,16 @@ if !exists('*matchadd')
   finish
 endif
 
+if !exists('g:color_indent_start')
+  " let g:color_indent_start = g:color_indent_start
+" else
+  let g:color_indent_start = 1
+endif
+
+if g:color_indent_start <= 0
+  let g:color_indent_start = 1
+endif
+
 if !exists('g:color_indent_max')
   " let g:color_indent_max = g:color_indent_max
 " else
@@ -67,13 +77,13 @@ function! s:DefineMatches()
 endfunction
 
 function! s:match1()
-  for i in range(1,g:color_indent_max,1)
+  for i in range(g:color_indent_start, g:color_indent_max)
     call add(w:color_indent_matches, matchadd('colorIndent'.i, '^\s*\%'.((i-1)*&l:sw+1).'v\s*\%'.(i*&l:sw+1).'v', g:color_indent_max-i+1))
   endfor
 endfunction
 
 function! s:match2()
-  for i in range(1,g:color_indent_max,1)
+  for i in range(g:color_indent_start, g:color_indent_max)
     call add(w:color_indent_matches, matchadd('colorIndent'.i.'post', '^\s*\%'.((i-1)*&l:sw+2).'v\zs\s*\%'.(i*&l:sw+1).'v'))
     call add(w:color_indent_matches, matchadd('colorIndent'.i, '^\s*\%'.((i-1)*&l:sw+1).'v\zs\s*\%'.((i-1)*&l:sw+2).'v'))
   endfor
