@@ -108,4 +108,5 @@ augroup colorindent
   autocmd BufEnter,WinEnter * call <SID>DefineMatches()
   "autocmd BufWinLeave * call <SID>ClearMatches()
   autocmd ColorScheme * call <SID>Colors()
+  autocmd FileType help let b:color_indent_disable = 1
 augroup END
