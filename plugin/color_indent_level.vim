@@ -8,22 +8,22 @@ if !exists('*matchadd')
   finish
 endif
 
-if exists('g:color_indent_max')
-  let s:color_indent_max = g:color_indent_max
-else
-  let s:color_indent_max = &foldnestmax
+if !exists('g:color_indent_max')
+  " let g:color_indent_max = g:color_indent_max
+" else
+  let g:color_indent_max = &foldnestmax
 endif
 
 " Define the highlight groups, but don't override the user's pre-defined
 " colors.
-for i in range(1,s:color_indent_max)
+for i in range(1,g:color_indent_max)
   exec 'highlight default clear colorIndent'.i
   exec 'highlight default link colorIndent'.i.'post colorIndent'.i
 endfor
-for i in range(3,s:color_indent_max,2)
+for i in range(3,g:color_indent_max,2)
   exec 'highlight default link colorIndent'.i.' colorIndent1'
 endfor
-for i in range(4,s:color_indent_max,2)
+for i in range(4,g:color_indent_max,2)
   exec 'highlight default link colorIndent'.i.' colorIndent2'
 endfor
 " For alternating colors for each indent level
@@ -39,7 +39,7 @@ highlight default colorIndent2 ctermbg=DarkGray guibg=#262626
 "
 "highlight colorIndent1 ctermbg=Black guibg=#262626
 "highlight colorIndent2 ctermbg=Black guibg=#262626
-"for i in range(1,s:color_indent_max,1)
+"for i in range(1,g:color_indent_max,1)
 "  exec 'highlight clear colorIndent'.i.'post'
 "endfor
 
@@ -67,13 +67,13 @@ function! s:DefineMatches()
 endfunction
 
 function! s:match1()
-  for i in range(1,s:color_indent_max,1)
-    call add(w:color_indent_matches, matchadd('colorIndent'.i, '^\s*\%'.((i-1)*&l:sw+1).'v\s*\%'.(i*&l:sw+1).'v', s:color_indent_max-i+1))
+  for i in range(1,g:color_indent_max,1)
+    call add(w:color_indent_matches, matchadd('colorIndent'.i, '^\s*\%'.((i-1)*&l:sw+1).'v\s*\%'.(i*&l:sw+1).'v', g:color_indent_max-i+1))
   endfor
 endfunction
 
 function! s:match2()
-  for i in range(1,s:color_indent_max,1)
+  for i in range(1,g:color_indent_max,1)
     call add(w:color_indent_matches, matchadd('colorIndent'.i.'post', '^\s*\%'.((i-1)*&l:sw+2).'v\zs\s*\%'.(i*&l:sw+1).'v'))
     call add(w:color_indent_matches, matchadd('colorIndent'.i, '^\s*\%'.((i-1)*&l:sw+1).'v\zs\s*\%'.((i-1)*&l:sw+2).'v'))
   endfor
