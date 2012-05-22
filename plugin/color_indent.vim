@@ -44,7 +44,11 @@ let s:cycle = ['Even', 'Odd']
 
 function! s:Colors()
   highlight default link colorIndentOdd CursorColumn
-  highlight default link colorIndentEven FoldColumn
+  if g:color_indent_size == 1
+    highlight default link colorIndentEven colorIndentOdd
+  else
+    highlight default link colorIndentEven FoldColumn
+  endif
 endfunction
 
 call s:Colors()
