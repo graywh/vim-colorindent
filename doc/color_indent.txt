@@ -1,0 +1,59 @@
+*color_indent.txt*    Colored Indents
+
+								*colorindent*
+
+Author: Will Gray <graywh AT gmail>
+
+==============================================================================
+CONTENTS
+
+  1. Configuration				|colorindent-configuration|
+  2. Commands					|colorindent-commands|
+
+==============================================================================
+1. Configuration				*colorindent-configuration*
+
+				*colorindent-colors*
+				*hl-colorIndentOdd* *hl-ColorIndentEven*
+By default, colorindent uses your colorscheme's |hl-CursorColumn| and/or
+|hl-FoldColumn|, but you may want to customize the colors.
+
+For example, if your Normal text background is 234/#1C1C1C:
+>
+	highlight ColorIndentOdd  ctermbg=233 guibg=#121212
+	highlight ColorIndentEven ctermbg=235 guibg=#262626
+<
+			*g:color_indent_disabled* *b:color_indent_disabled*
+Set to 1 to disable colorindent globally or for a single buffer.
+
+						*g:color_indent_size*
+The size of the indent guides.  Useful values are 0 (for whole indent) and 1
+(for single column).
+
+						*g:color_indent_start*
+Which indent to start at.  Defaults to 1 when g:color_indent_size is 0; 2
+when g:color_indent_size is 1.
+
+						*g:color_indent_max*
+The number of indents to color.  Defaults to 'foldnestmax'.
+
+==============================================================================
+2. Commands					*colorindent-commands*
+
+						*:ColorIndentEnable*
+:ColorIndentEnable[!]
+			Enable colored indents for the current buffer (sets
+			b:color_indent_disabled).  Can also be used to refresh
+			after changing 'shiftwidth' or a configuration
+			variable.
+			With !, enable for all buffers (sets
+			g:color_indent_disabled).
+
+						*:ColorIndentDisable*
+:ColorIndentDisable[!]
+			Disable colored indents for the current buffer (unsets
+			b:color_indent_disabled).
+			With !, disable for all buffers (unsets
+			g:color_indent_disabled).
+
+ vim:tw=78:fo=tcq2:isk=!-~,^*,^\|,^\":ts=8:ft=help:norl:
