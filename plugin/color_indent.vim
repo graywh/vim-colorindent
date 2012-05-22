@@ -14,10 +14,20 @@ if !exists('g:color_indent_disabled')
   let g:color_indent_disabled = 0
 end
 
+if !exists('g:color_indent_size')
+  " let g:color_indent_size = g:color_indent_size
+" else
+  let g:color_indent_size = 0
+endif
+
+if g:color_indent_size < 0
+  let g:color_indent_size = 0
+endif
+
 if !exists('g:color_indent_start')
   " let g:color_indent_start = g:color_indent_start
 " else
-  let g:color_indent_start = 1
+  let g:color_indent_start = 1 + (g:color_indent_size == 1)
 endif
 
 if g:color_indent_start <= 0
@@ -28,12 +38,6 @@ if !exists('g:color_indent_max')
   " let g:color_indent_max = g:color_indent_max
 " else
   let g:color_indent_max = &foldnestmax
-endif
-
-if !exists('g:color_indent_size')
-  " let g:color_indent_size = g:color_indent_size
-" else
-  let g:color_indent_size = 0
 endif
 
 let s:cycle = ['Even', 'Odd']
