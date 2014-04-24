@@ -140,5 +140,5 @@ augroup colorindent
   autocmd!
   autocmd BufEnter,WinEnter * call <SID>Define()
   autocmd ColorScheme * call <SID>Colors()
-  autocmd FileType help let b:color_indent_disable = 1
+  autocmd BufEnter * if &buftype=='help' | let b:color_indent_disable = 1 | endif
 augroup END
