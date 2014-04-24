@@ -82,7 +82,10 @@ function! s:Clear()
   " Remove old matches
   if exists('w:color_indent_matches')
     for id in w:color_indent_matches
-      call matchdelete(id)
+      try
+        call matchdelete(id)
+      catch
+      endtry
     endfor
   endif
   let w:color_indent_matches = []
