@@ -102,14 +102,14 @@ endfunction
 
 function! s:match1()
   for i in range(g:color_indent_start, g:color_indent_max)
-    call add(w:color_indent_matches, matchadd('colorIndent'.i, '^\s*\%'.((i-1)*&l:sw+1).'v\s*\%'.(i*&l:sw+1).'v', 0-i+1))
+    call add(w:color_indent_matches, matchadd('colorIndent'.i, '^\s*\%'.((i-1)*&l:sw+1).'v\s*\%'.(i*&l:sw+1).'v', 0-i))
   endfor
 endfunction
 
 function! s:match2()
   for i in range(g:color_indent_start, g:color_indent_max)
-    call add(w:color_indent_matches, matchadd('colorIndent'.s:cycle[i%2].'post', '^\s*\%'.((i-1)*&l:sw+2).'v\zs\s*\%'.(i*&l:sw+1).'v', 0-i+1))
-    call add(w:color_indent_matches, matchadd('colorIndent'.s:cycle[i%2], '^\s*\%'.((i-1)*&l:sw+1).'v\zs\s*\%'.((i-1)*&l:sw+2).'v', 0-i+1))
+    call add(w:color_indent_matches, matchadd('colorIndent'.s:cycle[i%2].'post', '^\s*\%'.((i-1)*&l:sw+2).'v\zs\s*\%'.(i*&l:sw+1).'v', 0-i))
+    call add(w:color_indent_matches, matchadd('colorIndent'.s:cycle[i%2], '^\s*\%'.((i-1)*&l:sw+1).'v\zs\s*\%'.((i-1)*&l:sw+2).'v', 0-i))
   endfor
 endfunction
 
@@ -129,7 +129,7 @@ endfunction
 function! s:match3()
   let l:size = s:size()
   for i in range(g:color_indent_start, g:color_indent_max)
-    call add(w:color_indent_matches, matchadd('colorIndent'.s:cycle[i%2], '^\s*\%'.((i-1)*&l:sw+1).'v\zs\s*\%'.((i-1)*&l:sw+1+l:size).'v', 0-i+1))
+    call add(w:color_indent_matches, matchadd('colorIndent'.s:cycle[i%2], '^\s*\%'.((i-1)*&l:sw+1).'v\zs\s*\%'.((i-1)*&l:sw+1+l:size).'v', 0-i))
   endfor
 endfunction
 
